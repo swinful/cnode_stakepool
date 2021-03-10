@@ -13,10 +13,10 @@
 
 #CCLI="${HOME}/.cabal/bin/cardano-cli"                  # Override automatic detection of path to cardano-cli executable
 #CNCLI="${HOME}/.cargo/bin/cncli"                       # Override automatic detection of path to cncli executable (https://github.com/AndrewWestberg/cncli)
-CNODE_HOME="{{ cardano_home }}"                        # Override default CNODE_HOME path (defaults to /opt/cardano/cnode)
+CNODE_HOME="{{ cnode_home }}"                           # Override default CNODE_HOME path (defaults to /opt/cardano/cnode)
 CNODE_PORT=6000                                         # Set node port
-CONFIG="${CNODE_HOME}/conf/{{ cluster }}-config.json"      # Override automatic detection of node config path
-SOCKET="${CNODE_HOME}/db/socket"                    # Override automatic detection of path to socket
+CONFIG="${CNODE_HOME}/conf/{{ cluster }}-config.json"   # Override automatic detection of node config path
+SOCKET="${CNODE_HOME}/db/socket"                        # Override automatic detection of path to socket
 #TOPOLOGY="${CNODE_HOME}/files/topology.json"           # Override default topology.json path
 #LOG_DIR="${CNODE_HOME}/logs"                           # Folder where your logs will be sent to (must pre-exist)
 #DB_DIR="${CNODE_HOME}/db"                              # Folder to store the cardano-node blockchain db
