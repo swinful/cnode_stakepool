@@ -1,0 +1,8 @@
+---
+# tasks file 
+- import_tasks: packages.yml
+- import_tasks: environment.yml
+- import_tasks: create_dirs.yml
+- import_tasks: configure.yml
+- import_tasks: scripts.yml
+- import_tasks: cronjobs.yml

@@ -1,0 +1,169 @@
+
+- name: Updating cabal...
+  ansible.builtin.command: "{{ bin }}/cabal update"
+  register: cabal_update
+
+
+- name: Get cabal version
+  ansible.builtin.command: "{{ bin }}/cabal -V"
+  register: cabal_version
+
+
+- name: Print cabal version
+  ansible.builtin.debug:
+      msg:
+          - "{{ cabal_version.stdout_lines }}"
+  when: not ansible_check_mode
+
+
+- name: Get ghc version
+  ansible.builtin.command: "{{ bin }}/ghc -V"
+  register: ghc_output
+
+- name: Print ghc version
+  ansible.builtin.debug:
+      msg:
+          - "{{ ghc_output.stdout_lines }}"
+  when: not ansible_check_mode
+
+
+- name: "Checkout cardano-node repo @ {{ tagged_version }}"
+  ansible.builtin.git:
+      repo: "{{ cnode_repo_url }}"
+      dest: "{{ cnode_repo_dir }}"
+      version: "{{ tagged_version }}"
+      refspec: '+refs/pull/*:refs/heads/*'
+
+
+- name: Configure build options for cabal
+  ansible.builtin.command: 
+    cmd: "cabal configure -O0 -w ghc-{{ ghc_version }}"
+  args:
+    chdir: "{{ cnode_repo_dir }}"
+  register: cabal_build_output
+  tags:
+    - config_build
+
+
+- name: Display Configure output
+  ansible.builtin.debug:
+      msg:
+          - "{{ cabal_build_output.stdout_lines }}"
+  when: not ansible_check_mode
+  tags:
+    - config_build
+
+
+- name: "Update the cabal config, project settings, and reset build folder"
+  ansible.builtin.lineinfile:
+    path: "{{ cnode_repo_dir }}/cabal.project.local"
+    line: "{{ item }}"
+  loop:
+    - "package cardano-crypto-praos"
+    - " flags: -external-libsodium-vrf"
+
+
+- name: "Set overwrite-policy: always"
+  ansible.builtin.lineinfile:
+    path: "~/.cabal/config"
+    regexp: '^-- overwrite-policy:'
+    line: '-- overwrite-policy: always'
+
+
+- name: Build binaries for cardano-node, cardano-cli (may take several minutes...)
+  ansible.builtin.command: "cabal build cardano-cli cardano-node"
+  args:
+    chdir: "{{ cnode_repo_dir }}"
+  register: build_output
+  tags:
+    - build_cardano
+
+
+- name: Do our binaries cardano-node, cardano-cli exist?
+  ansible.builtin.command: "find dist-newstyle -type f -name {{ item }} -print"
+  args:
+    chdir: "{{ cnode_repo_dir }}"
+  register: found_binaries
+  loop:
+    - cardano-cli
+    - cardano-node
+  tags:
+    - build_cardano
+    - check_binaries
+
+
+- name: "Copy binaries into cardano-cli and cardano-node into {{ bin }}/"
+  ansible.builtin.shell:
+    cmd: "cp {{ item }} {{ bin }}/"
+  args:
+      chdir: "{{ cnode_repo_dir }}"
+      creates: "{{ bin }}/{{ item | basename }}"
+  with_items: >-
+    {{ found_binaries.results | map(attribute='stdout') | flatten }}
+  tags:
+    - build_cardano
+    - check_binaries
+  when: not ansible_check_mode
+  become: true
+
+
+- name: "Fetch latest build node number" 
+  uri:
+    url: "{{ config_url }}"
+    return_content: yes
+  register: config_content
+  tags:
+    - display_node_num
+
+
+- name: Display latest node build number
+  ansible.builtin.debug:
+    msg:
+      - "{{ config_content.url | regex_findall('.*/([0-9]{6,})') }}"
+  register: build_node_num
+  tags:
+    - display_node_num
+
+
+- name: "Fetch {{ cluster }} configs into {{ cnode_conf_dir }}"
+  get_url:
+    url: "{{ config_url }}/{{ cluster }}-{{ item }}"
+    dest: "{{ cnode_conf_dir }}/{{ cluster }}-{{ item }}"
+  with_items:
+    - "byron-genesis.json"
+  # - "topology.json"
+    - "shelley-genesis.json"
+    - "config.json"
+  tags:
+    - cluster_configs
+
+
+- name: "{{ cluster }}-topology - Default Setup"
+  ansible.builtin.template:
+    src: "{{ cluster }}-topology.json"
+    dest: "{{ cnode_conf_dir }}/{{ cluster }}-topology.json"
+    mode: 0755
+  tags:
+    - cluster_configs
+
+
+- name: "{{ cluster }}-config.json - Set TraceBlockFetchDecisions to true"
+  ansible.builtin.lineinfile:
+    path: "{{ cnode_conf_dir }}/{{ cluster }}-config.json"
+    regexp: 'TraceBlockFetchDecisions":'
+    line: '  "TraceBlockFetchDecisions": true,'
+    validate: jq . %s
+  tags:
+    - cluster_configs
+
+
+- name: "{{ cluster }}-config.json - Expose hasEKG and hasPrometheus ports"
+  ansible.builtin.lineinfile:
+    path: "{{ cnode_conf_dir }}/{{ cluster }}-config.json"
+    regexp: '127.0.0.1'
+    line: '    "0.0.0.0",'
+    validate: jq . %s
+  tags:
+    - cluster_configs
+
+

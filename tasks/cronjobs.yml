@@ -1,0 +1,9 @@
+- name: Cron - Install topologyUpdater.sh to run hourly on the 22nd minute
+  ansible.builtin.cron:
+    name: "Update Topology"
+    minute: "22"
+    hour: "*"
+    job: "{{ cnode_scripts_dir }}/topologyUpdater.sh"
+  tags:
+    - cron
+

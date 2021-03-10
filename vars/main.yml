@@ -1,0 +1,63 @@
+---
+# vars file 
+cnode_type: cnode_relay
+
+tagged_version: 1.25.1
+ghc_version: 8.10.3
+
+cluster: mainnet
+
+prefix: /usr/local
+bin: "{{ prefix }}/bin"
+lib: "{{ prefix }}/lib"
+
+cnode_home: "{{ prefix }}/{{ cnode_type }}"
+cnode_repo_dir: "{{ cnode_home }}/git"
+cnode_conf_dir: "{{ cnode_home }}/conf"
+cnode_private_dir: "{{ cnode_home }}/private"
+cnode_scripts_dir: "{{ cnode_home }}/scripts"
+cnode_db_dir: "{{ cnode_home }}/db"
+cnode_db_socket: "{{ cnode_home }}/db/socket"
+cnode_var_dir: "/var/run/{{ cnode_type }}"
+cnode_log_dir: "/var/log/{{ cnode_type }}"
+
+cnode_dirs:
+  - "{{ cnode_home }}"
+  - "{{ cnode_repo_dir }}"
+  - "{{ cnode_conf_dir }}"
+  - "{{ cnode_private_dir }}"
+  - "{{ cnode_scripts_dir }}"
+  - "{{ cnode_db_dir }}"
+  - "{{ cnode_var_dir }}"
+  - "{{ cnode_log_dir }}"
+
+export_vars:
+  - "export NODE_HOME={{ cnode_home }}"
+  - "export CARDANO_SOCKET_PATH={{ cnode_db_socket }}"
+  - "export NODE_CONFIG={{ cluster }}" 
+  - "export PATH={{ bin }}:$PATH"
+  - "export LD_LIBRARY_PATH={{ lib }}:$LD_LIBRARY_PATH"
+
+required_packages:
+  - automake
+  - bash
+  - gcc
+  - ghc
+  - git
+  - gsed
+  - hs-cabal-install
+  - htop
+  - jq
+  - libffi
+  - libressl
+  - libsodium
+  - libtool
+  - ncurses
+  - pkgconf
+  - py37-pip
+  - python37
+  - rsync
+  - rust 
+  - screen
+  - vim-tiny
+  - wget

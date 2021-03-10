@@ -1,0 +1,21 @@
+
+- name: "Append Environment variables to .bashrc"
+  ansible.builtin.lineinfile:
+    path: "~/.bashrc"
+    create: yes
+    mode: '644'
+    line: "{{ item }}"
+  with_items: "{{ export_vars }}"
+  tags:
+    - env
+
+- name: "Append Environment variables to .profile"
+  ansible.builtin.lineinfile:
+    path: "~/.profile"
+    create: yes
+    mode: '644'
+    line: "{{ item }}"
+  with_items: "{{ export_vars }}"
+  tags:
+    - env
+

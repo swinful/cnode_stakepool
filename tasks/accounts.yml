@@ -1,0 +1,8 @@
+- name: Create cardano daemon user account
+  ansible.builtin.user:
+    name: "{{ cnode_user }}"
+    comment: Cardano node daemon user
+    shell: /bin/bash
+    generate_ssh_key: no
+  tags:
+    - create_user

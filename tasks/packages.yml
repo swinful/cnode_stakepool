@@ -1,0 +1,30 @@
+---
+- name: Installing Required Packages
+  action: >
+    {{ ansible_pkg_mgr }} name={{ item }} state=present
+  with_items: "{{ required_packages }}"
+  ignore_errors: no
+  tags:
+    - required_packages
+  become: true
+
+
+- name: Link /bin/bash - FreeBSD Only
+  ansible.builtin.file:
+    src: /usr/local/bin/bash
+    dest: /bin/bash
+    state: link
+  when: ansible_facts.os_family == "FreeBSD"
+  tags:
+    - required_packages
+  become: true
+
+
+- name: Add /bin/bash to /etc/shells
+  ansible.builtin.lineinfile:
+    path: /etc/shells
+    line: /bin/bash
+  tags:
+    - required_packages
+  become: true
+

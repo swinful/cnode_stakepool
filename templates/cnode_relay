@@ -1,0 +1,84 @@
+#!/bin/sh
+
+# PROVIDE: {{ cnode_type }}
+# REQUIRE: DAEMON FILESYSTEMS netif
+# KEYWORD:
+
+#
+# Add the following to /etc/rc.conf to enable {{ cnode_type }}:
+#
+# {{ cnode_type }}_enable="YES"
+# # optional
+# {{ cnode_type }}_hostaddr={{ cnode_host_addr }}
+# {{ cnode_type }}_port={{ cnode_host_port }}
+# {{ cnode_type }}_topology={{ cnode_conf_dir }}/mainnet-topology.json
+# {{ cnode_type }}_db_path={{ cnode_db_dir }}
+# {{ cnode_type }}_socket_path=/usr/local/etc/{{ cnode_type }}/db/socket
+# {{ cnode_type }}_config=/usr/local/etc/{{ cnode_type }}/mainnet-config.json
+
+. /etc/rc.subr
+
+
+name="{{ cnode_type }}"
+desc="{{ cnode_type }} daemon"
+rcvar="{{ cnode_type }}_enable"
+
+command="{{ bin }}/cardano-node"
+
+pidfile="{{ cnode_var_dir }}/${name}.pid"
+spidfile="{{ cnode_var_dir }}/s_${name}.pid"
+logfile="{{ cnode_log_dir }}/${name}.log"
+
+required_files="{{ cnode_conf_dir }}/mainnet-topology.json \
+    {{ cnode_conf_dir }}/mainnet-config.json"
+
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+restart_cmd="${name}_restart"
+
+{{ cnode_type }}_restart()
+{
+    kill -TERM `cat $pidfile`
+    return 0
+}
+
+{{ cnode_type }}_start() {
+    checkyesno {{ cnode_type }}_enable && echo "Starting {{ cnode_type }} node..."
+    daemon_bin=/usr/sbin/daemon
+
+    # Supervise process and restart if killed.
+    daemon_cmd="${daemon_bin} -P ${spidfile} -r -o ${logfile} -p ${pidfile} ${command} \
+        run --topology ${{ cnode_type }}_topology --database-path \
+        ${{ cnode_type }}_db_path --socket-path ${{ cnode_type }}_socket_path \
+        --host-addr ${{ cnode_type }}_hostaddr --port ${{ cnode_type }}_port \
+        --config ${{ cnode_type }}_config"
+
+    run_cmd="su -m {{ cnode_user }} -c '$daemon_cmd'"
+    eval "$run_cmd"
+    return 0
+}
+
+{{ cnode_type }}_stop() {
+    checkyesno {{ cnode_type }}_enable && \
+        echo "Terminating parent daemon `cat $spidfile`..." && \
+        kill -TERM `cat $spidfile`
+
+    return 0
+}
+
+load_rc_config $name
+
+# Note: We call another task to remove with space within parenthesis 
+: ${ {{ cnode_type }}_user:="{{ cnode_user }}"}
+: ${ {{ cnode_type }}_group:="{{ cnode_group }}"}
+: ${ {{ cnode_type }}_enable:=NO}
+: ${ {{ cnode_type }}_hostaddr:="{{ cnode_host_addr }}"}
+: ${ {{ cnode_type }}_port:="{{ cnode_host_port }}"}
+: ${ {{ cnode_type }}_directory:="{{ cnode_home }}"}
+: ${ {{ cnode_type }}_topology:="{{ cnode_conf_dir }}/mainnet-topology.json"}
+: ${ {{ cnode_type }}_db_path:="{{ cnode_db_dir }}"}
+: ${ {{ cnode_type }}_socket_path:="{{ cnode_db_socket }}"}
+: ${ {{ cnode_type }}_config:="{{ cnode_conf_dir }}/mainnet-config.json"}
+: ${ {{ cnode_type }}_msg:="Not started."}
+
+run_rc_command "$1"

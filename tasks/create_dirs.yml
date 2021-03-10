@@ -1,0 +1,21 @@
+- name: Ensure directories exists
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ cnode_user }}"
+    group: "{{ cnode_user }}"
+    recurse: yes
+    state: directory
+  with_items: "{{ cnode_dirs }}"
+  tags:
+    - create_dirs
+  become: true
+
+- name: "Create symbolic from {{ prefix }} to /opt"
+  ansible.builtin.file:
+    src: "{{ prefix }}"
+    dest: "/opt"
+    state: link
+  tags:
+    - create_dirs
+  become: true
+    

@@ -1,0 +1,42 @@
+
+- name: Copy scripts
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ cnode_scripts_dir }}"
+    mode: 0755
+  with_items:
+    - "{{ script_items }}"
+  tags:
+    - create_dirs
+    - copy_scripts
+
+- name: Start/Stop rc script
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/usr/local/etc/rc.d/{{ item }}"
+    mode: 0755
+  with_items: "{{ rc_scripts }}"
+  tags:
+    - rc_scripts
+  become: true
+
+
+- name: Fix rc local script spacing
+  ansible.builtin.replace:
+    path: "/usr/local/etc/rc.d/{{ item }}"
+    regexp: '{ '
+    replace: '{'
+  with_items: "{{ rc_scripts }}"
+  tags:
+    - rc_scripts
+  become: true
+
+
+- name: gLiveView - Adapt env (SOCKET=) file
+  ansible.builtin.lineinfile:
+    path: "{{ cnode_scripts_dir }}/env"
+    regexp: '^#SOCKET='
+    line: 'SOCKET="{{ cnode_db_socket }}"'
+  tags:
+    - create_dirs
+    - copy_scripts

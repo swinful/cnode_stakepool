@@ -1,0 +1,9 @@
+- name: newsyslog - Log rotation setup
+  ansible.builtin.template:
+    src: "cnode_relay_newsyslog.conf"
+    dest: "/etc/newsyslog.conf.d/{{ cnode_type }}.conf"
+    mode: 0755
+  tags:
+    - newsyslog
+  become: true
+
