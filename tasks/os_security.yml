@@ -13,10 +13,15 @@
 #    - os
 
 
-- name: /root restrict home permissions 0750
+- name: Restrict precious files/folders permissions
   ansible.builtin.file:
-    path: /root
-    mode: '0750'
+    path: "{{ item }}"
+    mode: u+rwX,g+rX,o-rX
+  with_items:
+    - /root
+    - /etc/cron.d
+    - /etc/ssh/sshd_config
+    - /etc/crontab
   become: true
   tags:
     - os
@@ -50,6 +55,19 @@
     - remove_toor
     - os
 
+
+- name: SSHD Config Hardening
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^(# *)?{{ item.name }}'
+    line: '{{ item.name }} {{ item.value }}'
+    backup: yes
+  with_items: "{{ sshd_settings }}"
+  notify: "SSHD Restart"
+  become: true
+  tags:
+    - os
+    - sshd_config
 
 # sysctl settings
 # ===================================================================

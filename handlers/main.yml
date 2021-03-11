@@ -7,3 +7,8 @@
   ansible.builtin.command: /usr/bin/cap_mkdb /etc/login.conf
   register: cap_mkdb_output
   become: true
+
+- name: SSHD Restart
+  ansible.builtin.command: /etc/rc.d/sshd restart
+  register: sshd_output
+  become: true

@@ -63,6 +63,19 @@ sysctl_settings:
   - { name: security.bsd.unprivileged_read_msgbuf, value: 0 }
 
 
+sshd_settings:
+  - { name: AllowTcpForwarding,   value: 'no' }
+  - { name: ClientAliveCountMax,  value: 2 }
+  - { name: Compression,          value: 'no' }
+  - { name: LogLevel,             value: VERBOSE }
+  - { name: MaxAuthTries,         value: 3 }
+  - { name: MaxSessions,          value: 2 }
+  - { name: TCPKeepAlive,         value: 'no' }
+  - { name: UseDNS,               value: 'no' }
+  - { name: X11Forwarding,        value: 'no' }
+  - { name: AllowAgentForwarding, value: 'no' }
+
+
 required_packages:
   - automake
   - bash
