@@ -7,3 +7,11 @@
   tags:
     - cron
 
+
+- name: Cron - Install relay-topology_pull.sh to run once daily
+  ansible.builtin.cron:
+    name: "Fetch relay buddies"
+    special_time: daily
+    job: "{{ cnode_scripts_dir }}/relay-topology_pull.sh"
+  tags:
+    - cron
