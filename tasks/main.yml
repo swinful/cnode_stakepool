@@ -6,3 +6,4 @@
 - import_tasks: configure.yml
 - import_tasks: scripts.yml
 - import_tasks: cronjobs.yml
+- import_tasks: newsyslog.yml

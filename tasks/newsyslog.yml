@@ -2,8 +2,10 @@
   ansible.builtin.template:
     src: "cnode_relay_newsyslog.conf"
     dest: "/etc/newsyslog.conf.d/{{ cnode_type }}.conf"
-    mode: 0755
+    mode: 0644
   tags:
     - newsyslog
+  notify:
+    - Execute newsyslog
   become: true
 

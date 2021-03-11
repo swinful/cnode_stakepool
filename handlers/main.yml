@@ -1,0 +1,4 @@
+- name: Execute newsyslog
+  ansible.builtin.command: /usr/sbin/newsyslog
+  register: newsyslog_output
+  become: true
