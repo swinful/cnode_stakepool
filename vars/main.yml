@@ -33,7 +33,7 @@ cnode_dirs:
 
 export_vars:
   - "export NODE_HOME={{ cnode_home }}"
-  - "export CARDANO_SOCKET_PATH={{ cnode_db_socket }}"
+  - "export CARDANO_NODE_SOCKET_PATH={{ cnode_db_socket }}"
   - "export NODE_CONFIG={{ cluster }}" 
   - "export PATH={{ bin }}:$PATH"
   - "export LD_LIBRARY_PATH={{ lib }}:$LD_LIBRARY_PATH"
