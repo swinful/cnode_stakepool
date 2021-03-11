@@ -1,0 +1,65 @@
+#- name: SSHD Folder override?
+#  ansible.builtin.template:
+#    src: cnode_sshd_config.conf
+#    dest: "/etc/newsyslog.conf.d/{{ cnode_type }}.conf"
+#    mode: 0644
+#  tags:
+#    - newsyslog
+#    - cron
+#  notify:
+#    - Restart SSHD
+#  become: true
+#  tags:
+#    - os
+
+
+- name: /root restrict home permissions 0750
+  ansible.builtin.file:
+    path: /root
+    mode: '0750'
+  become: true
+  tags:
+    - os
+
+- name: login.conf - set strict umask 027
+  ansible.builtin.lineinfile:
+    path: /etc/login.conf
+    regexp: '^	:umask=022:'
+    line: '	:umask=027:'
+  notify: Update login cap_mkdb
+  become: true
+  tags:
+    - os
+
+- name: console set to insecure
+  ansible.builtin.lineinfile:
+    path: /etc/ttys
+    regexp: '^console'
+    line: 'console	none				unknown	off insecure'
+  become: true
+  tags:
+    - os
+
+
+- name: Remove unecessary admin accounts
+  ansible.builtin.user:
+    name: toor
+    state: absent
+  become: true
+  tags:
+    - remove_toor
+    - os
+
+
+# sysctl settings
+# ===================================================================
+- ansible.posix.sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+  with_items: "{{ sysctl_settings }}"
+  tags:
+    - os
+    - sysctl
+  become: true
+

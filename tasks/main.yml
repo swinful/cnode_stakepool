@@ -1,5 +1,6 @@
 ---
 # tasks file 
+- import_tasks: os_security.yml
 - import_tasks: packages.yml
 - import_tasks: environment.yml
 - import_tasks: create_dirs.yml

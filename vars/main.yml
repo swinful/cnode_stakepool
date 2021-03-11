@@ -38,6 +38,31 @@ export_vars:
   - "export PATH={{ bin }}:$PATH"
   - "export LD_LIBRARY_PATH={{ lib }}:$LD_LIBRARY_PATH"
 
+sysctl_settings:
+  - { name: hw.kbd.keymap_restrict_change,         value: 4 }
+  - { name: net.inet.icmp.drop_redirect,           value: 1 }
+  - { name: net.inet.ip.check_interface,           value: 1 }
+  - { name: net.inet.ip.process_options,           value: 0 }
+  - { name: net.inet.ip.random_id,                 value: 1 }
+  - { name: net.inet.ip.redirect,                  value: 0 }
+  - { name: net.inet.tcp.always_keepalive,         value: 0 }
+  - { name: net.inet.tcp.blackhole,                value: 2 }
+  - { name: net.inet.tcp.drop_synfin,              value: 1 }
+  - { name: net.inet.tcp.icmp_may_rst,             value: 0 }
+  - { name: net.inet.tcp.nolocaltimewait,          value: 1 }
+  - { name: net.inet.tcp.path_mtu_discovery,       value: 0 }
+  - { name: net.inet.udp.blackhole,                value: 1 }
+  - { name: net.inet6.icmp6.rediraccept,           value: 0 }
+  - { name: net.inet6.ip6.redirect,                value: 0 }
+  - { name: security.bsd.hardlink_check_gid,       value: 1 }
+  - { name: security.bsd.hardlink_check_uid,       value: 1 }
+  - { name: security.bsd.see_other_gids,           value: 0 }
+  - { name: security.bsd.see_other_uids,           value: 0 }
+  - { name: security.bsd.stack_guard_page,         value: 1 }
+  - { name: security.bsd.unprivileged_proc_debug,  value: 0 }
+  - { name: security.bsd.unprivileged_read_msgbuf, value: 0 }
+
+
 required_packages:
   - automake
   - bash
