@@ -5,6 +5,7 @@
     mode: 0644
   tags:
     - newsyslog
+    - cron
   notify:
     - Execute newsyslog
   become: true

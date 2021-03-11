@@ -2,3 +2,8 @@
   ansible.builtin.command: /usr/sbin/newsyslog
   register: newsyslog_output
   become: true
+
+- name: Update login cap_mkdb
+  ansible.builtin.command: /usr/bin/cap_mkdb /etc/login.conf
+  register: cap_mkdb_output
+  become: true
