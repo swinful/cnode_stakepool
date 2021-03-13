@@ -16,14 +16,18 @@
   when: not ansible_check_mode
 
 
-- name: Get ghc version
-  ansible.builtin.command: "{{ bin }}/ghc -V"
-  register: ghc_output
+- name: Get ghc version for cabal build options
+  ansible.builtin.shell:
+    cmd: "{{ bin }}/ghc -V | awk '{print $(NF)}'"
+  register: ghc_version_output
+  tags:
+    - ghc_version
 
-- name: Print ghc version
-  ansible.builtin.debug:
-      msg:
-          - "{{ ghc_output.stdout_lines }}"
+- name: Set fact for ghc version
+  set_fact:
+    ghc_version: "{{ ghc_version_output.stdout_lines[0] }}"
+  tags:
+    - ghc_version
   when: not ansible_check_mode
 
 
@@ -35,7 +39,7 @@
       refspec: '+refs/pull/*:refs/heads/*'
 
 
-- name: Configure build options for cabal
+- name: "Configure build options for cabal - ghc-{{ ghc_version }}"
   ansible.builtin.command: 
     cmd: "cabal configure -O0 -w ghc-{{ ghc_version }}"
   args:
@@ -43,6 +47,8 @@
   register: cabal_build_output
   tags:
     - config_build
+    - ghc_version
+
 
 
 - name: Display Configure output
@@ -123,6 +129,7 @@
   register: build_node_num
   tags:
     - display_node_num
+  when: not ansible_check_mode
 
 
 - name: "Fetch {{ cluster }} configs into {{ cnode_conf_dir }}"

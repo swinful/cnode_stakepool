@@ -3,7 +3,6 @@
 cnode_type: cnode_relay
 
 tagged_version: 1.25.1
-ghc_version: 8.10.3
 
 cluster: mainnet
 
