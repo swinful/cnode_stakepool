@@ -9,7 +9,7 @@ This role only supports the setup of a relay node at the moment.
 ```yaml
 - hosts: relays
   strategy: free
-  roles:$
+  roles:
       - { role: cnode_stakepool, cnode_user: remote_username }
 ```
 
