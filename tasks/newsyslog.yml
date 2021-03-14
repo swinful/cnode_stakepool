@@ -9,4 +9,3 @@
   notify:
     - Execute newsyslog
   become: true
-

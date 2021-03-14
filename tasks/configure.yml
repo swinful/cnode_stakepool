@@ -1,4 +1,3 @@
-
 - name: Updating cabal...
   ansible.builtin.command: "{{ bin }}/cabal update"
   register: cabal_update
@@ -177,4 +176,3 @@
   tags:
     - cluster_configs
   when: not ansible_check_mode
-

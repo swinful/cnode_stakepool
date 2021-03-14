@@ -30,4 +30,3 @@ script_items:
   - get_kesPeriod.sh
   - topologyUpdater.sh
   - relay-topology_pull.sh
-

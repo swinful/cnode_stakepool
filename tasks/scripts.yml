@@ -1,4 +1,3 @@
-
 - name: Copy scripts
   ansible.builtin.template:
     src: "{{ item }}"

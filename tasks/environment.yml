@@ -1,4 +1,3 @@
-
 - name: "Append Environment variables to .bashrc"
   ansible.builtin.lineinfile:
     path: "~/.bashrc"
@@ -18,4 +17,3 @@
   with_items: "{{ export_vars }}"
   tags:
     - env
-
