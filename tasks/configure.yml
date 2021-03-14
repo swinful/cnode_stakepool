@@ -48,7 +48,7 @@
   tags:
     - config_build
     - ghc_version
-
+  when: not ansible_check_mode
 
 
 - name: Display Configure output
@@ -67,6 +67,7 @@
   loop:
     - "package cardano-crypto-praos"
     - " flags: -external-libsodium-vrf"
+  when: not ansible_check_mode
 
 
 - name: "Set overwrite-policy: always"
@@ -74,6 +75,7 @@
     path: "~/.cabal/config"
     regexp: '^-- overwrite-policy:'
     line: '-- overwrite-policy: always'
+  when: not ansible_check_mode
 
 
 - name: Build binaries for cardano-node, cardano-cli (may take several minutes...)
@@ -143,6 +145,7 @@
     - "config.json"
   tags:
     - cluster_configs
+  when: not ansible_check_mode
 
 
 - name: "{{ cluster }}-topology - Default Setup"
@@ -162,6 +165,7 @@
     validate: jq . %s
   tags:
     - cluster_configs
+  when: not ansible_check_mode
 
 
 - name: "{{ cluster }}-config.json - Expose hasEKG and hasPrometheus ports"
@@ -172,5 +176,5 @@
     validate: jq . %s
   tags:
     - cluster_configs
-
+  when: not ansible_check_mode
 

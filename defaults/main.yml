@@ -3,8 +3,7 @@
 
 # daemon/runas user/group
 cnode_user: adauser
-cnode_group: adauser
-cnode_shell: /bin/bash
+cnode_group: "{{ cnode_user }}"
 
 cnode_host_addr: 0.0.0.0
 cnode_host_port: 6000

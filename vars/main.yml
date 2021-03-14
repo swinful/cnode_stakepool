@@ -6,6 +6,8 @@ tagged_version: 1.25.1
 
 cluster: mainnet
 
+cnode_shell: /bin/bash
+
 prefix: /usr/local
 bin: "{{ prefix }}/bin"
 lib: "{{ prefix }}/lib"

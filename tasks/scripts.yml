@@ -30,6 +30,7 @@
   tags:
     - rc_scripts
   become: true
+  when: not ansible_check_mode
 
 
 - name: gLiveView - Adapt env (SOCKET=) file
@@ -40,3 +41,4 @@
   tags:
     - create_dirs
     - copy_scripts
+  when: not ansible_check_mode
