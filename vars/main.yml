@@ -1,6 +1,8 @@
 ---
 # vars file 
-cnode_type: cnode_relay
+basename: cnode
+type: relay
+cnode_type: "{{ basename }}_{{ type }}"
 
 tagged_version: 1.25.1
 
