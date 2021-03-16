@@ -63,7 +63,7 @@
     line: '{{ item.name }} {{ item.value }}'
     backup: yes
   with_items: "{{ sshd_settings }}"
-  notify: "SSHD Restart"
+  notify: "Restart sshd"
   become: true
   tags:
     - os

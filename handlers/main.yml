@@ -8,7 +8,12 @@
   register: cap_mkdb_output
   become: true
 
-- name: SSHD Restart
+- name: Restart sshd
   ansible.builtin.command: /etc/rc.d/sshd restart
   register: sshd_output
+  become: true
+
+- name: Restart cnode
+  ansible.builtin.command: /opt/etc/rc.d/cnode_relay restart
+  register: cnode_output
   become: true

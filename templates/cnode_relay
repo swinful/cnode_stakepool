@@ -11,10 +11,10 @@
 # # optional
 # {{ cnode_type }}_hostaddr={{ cnode_host_addr }}
 # {{ cnode_type }}_port={{ cnode_host_port }}
-# {{ cnode_type }}_topology={{ cnode_conf_dir }}/mainnet-topology.json
+# {{ cnode_type }}_topology={{ cnode_conf_dir }}/{{ topology_json }}
 # {{ cnode_type }}_db_path={{ cnode_db_dir }}
-# {{ cnode_type }}_socket_path=/usr/local/etc/{{ cnode_type }}/db/socket
-# {{ cnode_type }}_config=/usr/local/etc/{{ cnode_type }}/mainnet-config.json
+# {{ cnode_type }}_socket_path={{ cnode_db_dir }}/socket
+# {{ cnode_type }}_config={{ cnode_conf_dir }}/{{ config_json }}
 
 . /etc/rc.subr
 
@@ -75,10 +75,10 @@ load_rc_config $name
 : ${ {{ cnode_type }}_hostaddr:="{{ cnode_host_addr }}"}
 : ${ {{ cnode_type }}_port:="{{ cnode_host_port }}"}
 : ${ {{ cnode_type }}_directory:="{{ cnode_home }}"}
-: ${ {{ cnode_type }}_topology:="{{ cnode_conf_dir }}/mainnet-topology.json"}
+: ${ {{ cnode_type }}_topology:="{{ cnode_conf_dir }}/{{ topology_json }}"}
 : ${ {{ cnode_type }}_db_path:="{{ cnode_db_dir }}"}
 : ${ {{ cnode_type }}_socket_path:="{{ cnode_db_socket }}"}
-: ${ {{ cnode_type }}_config:="{{ cnode_conf_dir }}/mainnet-config.json"}
+: ${ {{ cnode_type }}_config:="{{ cnode_conf_dir }}/{{ config_json }}"}
 : ${ {{ cnode_type }}_msg:="Not started."}
 
 run_rc_command "$1"

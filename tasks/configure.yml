@@ -139,40 +139,56 @@
     dest: "{{ cnode_conf_dir }}/{{ cluster }}-{{ item }}"
   with_items:
     - "byron-genesis.json"
-  # - "topology.json"
     - "shelley-genesis.json"
-    - "config.json"
+  # - "topology.json"
+  # - "config.json"
   tags:
     - cluster_configs
   when: not ansible_check_mode
 
 
-- name: "{{ cluster }}-topology - Default Setup"
+- name: "Copy configs needing restart to {{ cnode_conf_dir }}/"
   ansible.builtin.template:
-    src: "{{ cluster }}-topology.json"
-    dest: "{{ cnode_conf_dir }}/{{ cluster }}-topology.json"
+    src: "{{ item }}"
+    dest: "{{ cnode_conf_dir }}/{{ item }}"
     mode: 0755
+  with_items:
+    - "{{ config_json }}"
+  notify:
+    - "Restart cnode"
   tags:
     - cluster_configs
 
 
-- name: "{{ cluster }}-config.json - Set TraceBlockFetchDecisions to true"
-  ansible.builtin.lineinfile:
-    path: "{{ cnode_conf_dir }}/{{ cluster }}-config.json"
-    regexp: 'TraceBlockFetchDecisions":'
-    line: '  "TraceBlockFetchDecisions": true,'
-    validate: jq . %s
+- name: "Copy configs to {{ cnode_conf_dir }}/"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ cnode_conf_dir }}/{{ item }}"
+    mode: 0755
+  with_items:
+    - "{{ topology_json }}"
   tags:
     - cluster_configs
-  when: not ansible_check_mode
 
-
-- name: "{{ cluster }}-config.json - Expose hasEKG and hasPrometheus ports"
-  ansible.builtin.lineinfile:
-    path: "{{ cnode_conf_dir }}/{{ cluster }}-config.json"
-    regexp: '127.0.0.1'
-    line: '    "0.0.0.0",'
-    validate: jq . %s
-  tags:
-    - cluster_configs
-  when: not ansible_check_mode
+# mainnet-config.json is now maintained as a template. We are no longer fetching
+# them. Will likely delete in the future.
+# - name: "{{ cluster }}-config.json - Set TraceBlockFetchDecisions to true"
+#   ansible.builtin.lineinfile:
+#     path: "{{ cnode_conf_dir }}/{{ cluster }}-config.json"
+#     regexp: 'TraceBlockFetchDecisions":'
+#     line: '  "TraceBlockFetchDecisions": true,'
+#     validate: jq . %s
+#   tags:
+#     - cluster_configs
+#   when: not ansible_check_mode
+# 
+# 
+# - name: "{{ cluster }}-config.json - Expose hasEKG and hasPrometheus ports"
+#   ansible.builtin.lineinfile:
+#     path: "{{ cnode_conf_dir }}/{{ cluster }}-config.json"
+#     regexp: '127.0.0.1'
+#     line: '    "0.0.0.0",'
+#     validate: jq . %s
+#   tags:
+#     - cluster_configs
+#   when: not ansible_check_mode

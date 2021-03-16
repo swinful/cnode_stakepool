@@ -24,6 +24,7 @@ cnode_db_socket: "{{ cnode_home }}/db/socket"
 cnode_var_dir: "/var/run/{{ cnode_type }}"
 cnode_log_dir: "/var/log/{{ cnode_type }}"
 
+
 cnode_dirs:
   - "{{ cnode_home }}"
   - "{{ cnode_repo_dir }}"
@@ -33,6 +34,14 @@ cnode_dirs:
   - "{{ cnode_db_dir }}"
   - "{{ cnode_var_dir }}"
   - "{{ cnode_log_dir }}"
+
+
+byron_genesis_json:   "{{ cluster }}-byron-genesis.json"
+config_json:          "{{ cluster }}-config.json"
+dbsync_json:          "{{ cluster }}-dbsync.json"
+shelley_genesis_json: "{{ cluster }}-shelley-genesis.json"
+topology_json:        "{{ cluster }}-topology.json"
+
 
 export_vars:
   - "export NODE_HOME={{ cnode_home }}"
