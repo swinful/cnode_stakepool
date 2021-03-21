@@ -7,7 +7,7 @@
     - "{{ script_items }}"
   tags:
     - create_dirs
-    - copy_scripts
+    - scripts
 
 - name: Start/Stop rc script
   ansible.builtin.template:
@@ -39,5 +39,5 @@
     line: 'SOCKET="{{ cnode_db_socket }}"'
   tags:
     - create_dirs
-    - copy_scripts
+    - scripts
   when: not ansible_check_mode

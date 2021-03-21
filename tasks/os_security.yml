@@ -12,6 +12,29 @@
 #  tags:
 #    - os
 
+- name: Enable ntpdate
+  community.general.sysrc:
+    name: "{{ item }}"
+    value: "YES"
+    state: present
+  with_items:
+    - ntpdate_enable
+  tags:
+    - os
+    - date
+
+- name: Update ntpdate config
+  ansible.builtin.template:
+    src: ntp.conf
+    dest: /etc/ntp.conf
+    mode: 0644
+  tags:
+    - date
+    - os
+  notify:
+    - Restart ntpdate
+  become: true
+
 
 - name: Restrict precious files/folders permissions
   ansible.builtin.file:

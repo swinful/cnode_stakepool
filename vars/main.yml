@@ -52,8 +52,10 @@ export_vars:
 
 sysctl_settings:
   - { name: hw.kbd.keymap_restrict_change,         value: 4 }
+  - { name: kern.ipc.somaxconn,                    value: 4096 }
   - { name: net.inet.icmp.drop_redirect,           value: 1 }
   - { name: net.inet.ip.check_interface,           value: 1 }
+  - { name: net.inet.ip.forwarding,                value: 0 }
   - { name: net.inet.ip.process_options,           value: 0 }
   - { name: net.inet.ip.random_id,                 value: 1 }
   - { name: net.inet.ip.redirect,                  value: 0 }

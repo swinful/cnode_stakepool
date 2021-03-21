@@ -7,6 +7,10 @@ cnode_group: "{{ cnode_user }}"
 
 cnode_host_addr: 0.0.0.0
 cnode_host_port: 6000
+# cnode_ssh_port:
+# cnode_knock_knock_port1:
+# cnode_knock_knock_port2:
+# cnode_knock_knock_port3:
 
 # Keys (not yet used)
 hotkey_sign: kes.skey

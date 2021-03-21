@@ -17,3 +17,11 @@
   ansible.builtin.command: /opt/etc/rc.d/cnode_relay restart
   register: cnode_output
   become: true
+
+- name: Restart ntpdate
+  ansible.builtin.command: /etc/rc.d/ntpdate restart
+  register: ntpdate_output
+  become: true
+  tags:
+    - os
+    - date
