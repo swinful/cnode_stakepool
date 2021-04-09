@@ -4,7 +4,7 @@ basename: cnode
 type: relay
 cnode_type: "{{ basename }}_{{ type }}"
 
-tagged_version: 1.25.1
+tagged_version: 1.26.1
 
 cluster: mainnet
 

@@ -86,8 +86,8 @@
     - build_cardano
 
 
-- name: Do our binaries cardano-node, cardano-cli exist?
-  ansible.builtin.command: "find dist-newstyle -type f -name {{ item }} -print"
+- name: Does {{ tagged_version }} of cardano-node, cardano-cli exist?
+  ansible.builtin.command: "find dist-newstyle -type f -path *{{ tagged_version }}*{{ item }} -print"
   args:
     chdir: "{{ cnode_repo_dir }}"
   register: found_binaries
@@ -104,7 +104,6 @@
     cmd: "cp {{ item }} {{ bin }}/"
   args:
       chdir: "{{ cnode_repo_dir }}"
-      creates: "{{ bin }}/{{ item | basename }}"
   with_items: >-
     {{ found_binaries.results | map(attribute='stdout') | flatten }}
   tags:
