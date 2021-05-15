@@ -17,7 +17,7 @@ NWMAGIC=$(jq -r .networkMagic < $GENESIS_JSON)
 export PATH="${CNODE_BIN}:${PATH}"
 export CARDANO_NODE_SOCKET_PATH="${CNODE_HOME}/db/socket"
  
-blockNo=$(/usr/local/bin/cardano-cli query tip ${NETWORK_IDENTIFIER} | jq -r .blockNo )
+blockNo=$(/usr/local/bin/cardano-cli query tip ${NETWORK_IDENTIFIER} | jq -r .block )
  
 # Note:
 # if you run your node in IPv4/IPv6 dual stack network configuration and want announced the
