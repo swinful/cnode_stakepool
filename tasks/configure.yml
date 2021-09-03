@@ -36,6 +36,7 @@
       dest: "{{ cnode_repo_dir }}"
       version: "{{ tagged_version }}"
       refspec: '+refs/pull/*:refs/heads/*'
+      force: yes
 
 
 - name: "Configure build options for cabal - ghc-{{ ghc_version }}"
