@@ -139,6 +139,7 @@
   with_items:
     - "byron-genesis.json"
     - "shelley-genesis.json"
+    - "alonzo-genesis.json"
   # - "topology.json"
   # - "config.json"
   tags:
