@@ -4,7 +4,7 @@ basename: cnode
 type: relay
 cnode_type: "{{ basename }}_{{ type }}"
 
-tagged_version: 1.26.1
+tagged_version: 1.27.0
 
 cluster: mainnet
 
@@ -36,6 +36,7 @@ cnode_dirs:
   - "{{ cnode_log_dir }}"
 
 
+alonzo_genesis_json:  "{{ cluster }}-alonzo-genesis.json"
 byron_genesis_json:   "{{ cluster }}-byron-genesis.json"
 config_json:          "{{ cluster }}-config.json"
 dbsync_json:          "{{ cluster }}-dbsync.json"
@@ -52,7 +53,7 @@ export_vars:
 
 sysctl_settings:
   - { name: hw.kbd.keymap_restrict_change,         value: 4 }
-  - { name: kern.ipc.somaxconn,                    value: 4096 }
+  - { name: kern.ipc.soacceptqueue,                value: 4096 }
   - { name: net.inet.icmp.drop_redirect,           value: 1 }
   - { name: net.inet.ip.check_interface,           value: 1 }
   - { name: net.inet.ip.forwarding,                value: 0 }
@@ -66,8 +67,6 @@ sysctl_settings:
   - { name: net.inet.tcp.nolocaltimewait,          value: 1 }
   - { name: net.inet.tcp.path_mtu_discovery,       value: 0 }
   - { name: net.inet.udp.blackhole,                value: 1 }
-  - { name: net.inet6.icmp6.rediraccept,           value: 0 }
-  - { name: net.inet6.ip6.redirect,                value: 0 }
   - { name: security.bsd.hardlink_check_gid,       value: 1 }
   - { name: security.bsd.hardlink_check_uid,       value: 1 }
   - { name: security.bsd.see_other_gids,           value: 0 }
