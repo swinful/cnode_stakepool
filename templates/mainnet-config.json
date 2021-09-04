@@ -1,0 +1,93 @@
+{
+  "ApplicationName": "cardano-sl",
+  "ApplicationVersion": 1,
+  "AlonzoGenesisFile": "{{ cnode_conf_dir }}/{{ alonzo_genesis_json }}",
+  "AlonzoGenesisHash": "7e94a15f55d1e82d10f09203fa1d40f8eede58fd8066542cf6566008068ed874",
+  "ByronGenesisFile": "{{ cnode_conf_dir }}/{{ byron_genesis_json }}",
+  "ByronGenesisHash": "5f20df933584822601f9e3f8c024eb5eb252fe8cefb24d1317dc3d432e940ebb",
+  "LastKnownBlockVersion-Alt": 0,
+  "LastKnownBlockVersion-Major": 3,
+  "LastKnownBlockVersion-Minor": 0,
+  "MaxKnownMajorProtocolVersion": 2,
+  "Protocol": "Cardano",
+  "RequiresNetworkMagic": "RequiresNoMagic",
+  "ShelleyGenesisFile": "{{ cnode_conf_dir }}/{{ shelley_genesis_json }}",
+  "ShelleyGenesisHash": "1a3be38bcbb7911969283716ad7aa550250226b76a61fc51cc9a9a35d9276d81",
+  "TraceBlockFetchClient": true,
+  "TraceBlockFetchDecisions": true,
+  "TraceBlockFetchProtocol": true,
+  "TraceBlockFetchProtocolSerialised": true,
+  "TraceBlockFetchServer": true,
+  "TraceChainDb": true,
+  "TraceChainSyncBlockServer": true,
+  "TraceChainSyncClient": true,
+  "TraceChainSyncHeaderServer": true,
+  "TraceChainSyncProtocol": true,
+  "TraceDNSResolver": true,
+  "TraceDNSSubscription": true,
+  "TraceErrorPolicy": true,
+  "TraceForge": true,
+  "TraceHandshake": false,
+  "TraceIpSubscription": true,
+  "TraceLocalChainSyncProtocol": true,
+  "TraceLocalErrorPolicy": true,
+  "TraceLocalHandshake": false,
+  "TraceLocalTxSubmissionProtocol": true,
+  "TraceLocalTxSubmissionServer": true,
+  "TraceMempool": true,
+  "TraceMux": false,
+  "TraceTxInbound": false,
+  "TraceTxOutbound": false,
+  "TraceTxSubmissionProtocol": false,
+  "TracingVerbosity": "NormalVerbosity",
+  "TurnOnLogMetrics": true,
+  "TurnOnLogging": true,
+  "MaxConcurrencyDeadline": 2,
+  "defaultBackends": [
+    "KatipBK"
+  ],
+  "defaultScribes": [
+    [
+      "FileSK",
+      "{{ cnode_log_dir }}/node0.json"
+    ]
+  ],
+  "hasEKG": 12788,
+  "hasPrometheus": [
+    "{{ cnode_host_addr }}",
+    12798
+  ],
+  "minSeverity": "Info",
+  "options": {
+    "mapBackends": {
+      "cardano.node.metrics": [
+        "EKGViewBK"
+      ],
+      "cardano.node.resources": [
+        "EKGViewBK"
+      ]
+    },
+    "mapSubtrace": {
+      "cardano.node.metrics": {
+        "subtrace": "Neutral"
+      }
+    }
+  },
+  "rotation": {
+    "rpKeepFilesNum": 10,
+    "rpLogLimitBytes": 500000000,
+    "rpMaxAgeHours": 24
+  },
+  "setupBackends": [
+    "KatipBK",
+    "EKGViewBK"
+  ],
+  "setupScribes": [
+    {
+      "scKind": "FileSK",
+      "scName": "{{ cnode_log_dir }}/node0.json",
+      "scFormat": "ScJson",
+      "scRotation": null
+    }
+  ]
+}
