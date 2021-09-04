@@ -8,7 +8,7 @@ FILE="{{ cnode_home }}/conf/mainnet-shelley-genesis.json"
 slotsPerKESPeriod=`jq -r '.slotsPerKESPeriod' $FILE`
 echo slotsPerKESPeriod: ${slotsPerKESPeriod}
 
-slotNo=$(cardano-cli query tip --mainnet | jq -r '.slotNo')
+slotNo=$(cardano-cli query tip --mainnet | jq -r '.slot')
 echo slotNo: ${slotNo}
 
 kesPeriod=$((${slotNo} / ${slotsPerKESPeriod}))
