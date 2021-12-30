@@ -38,7 +38,7 @@ restart_cmd="${name}_restart"
 
 {{ cnode_type }}_restart()
 {
-    kill -TERM `cat $pidfile`
+    kill -SIGINT `cat $pidfile`
     return 0
 }
 
@@ -60,8 +60,10 @@ restart_cmd="${name}_restart"
 
 {{ cnode_type }}_stop() {
     checkyesno {{ cnode_type }}_enable && \
+        echo "Terminating cnode `cat $pidfile`..." && \
+        kill -s SIGINT `cat $pidfile` && sleep 1 && \
         echo "Terminating parent daemon `cat $spidfile`..." && \
-        kill -TERM `cat $spidfile`
+        kill -SIGTERM `cat $spidfile`
 
     return 0
 }
