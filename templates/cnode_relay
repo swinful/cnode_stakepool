@@ -48,6 +48,7 @@ restart_cmd="${name}_restart"
 
     # Supervise process and restart if killed.
     daemon_cmd="${daemon_bin} -P ${spidfile} -r -o ${logfile} -p ${pidfile} ${command} \
+        +RTS -qb0 -T -S -N -G2 -A32m -AL512m -n1m -F1.1 -C0 -I0 -O3000m -RTS \
         run --topology ${{ cnode_type }}_topology --database-path \
         ${{ cnode_type }}_db_path --socket-path ${{ cnode_type }}_socket_path \
         --host-addr ${{ cnode_type }}_hostaddr --port ${{ cnode_type }}_port \

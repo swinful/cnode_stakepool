@@ -7,6 +7,4 @@
 - import_tasks: configure.yml
 - import_tasks: scripts.yml
 - import_tasks: cronjobs.yml
-
-# Not needed for now. We use builtin log rotation defined in mainnet-config.json
-# - import_tasks: newsyslog.yml
+- import_tasks: newsyslog.yml
